@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dev Bio Card - Pink Purple</title>
     <style>
+        body {
+            zoom: 70%;
+            -moz-transform: scale(0.7);
+            -moz-transform-origin: 0 0;
+        }
+    </style>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -649,22 +656,45 @@
         </div>
     </div>
     <script>
+        // ป้องกันการเปิด DevTools
+        document.addEventListener('contextmenu', e => e.preventDefault());
+
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) return false; // F12
+            if (e.ctrlKey && e.shiftKey && ['I','C','J'].includes(e.key)) return false; // Ctrl+Shift+I/C/J
+            if (e.ctrlKey && e.key === 'U') return false; // Ctrl+U
+            if (e.keyCode == 116) return false; // F5
+            if (e.ctrlKey && e.key === 'R') return false; // Ctrl+R
+        };
+
+        // ตรวจจับว่า DevTools ถูกเปิดหรือไม่
+        (function() {
+            const checkDevTools = () => {
+                const start = performance.now();
+                debugger; // trick
+                const end = performance.now();
+                if (end - start > 100) {
+                    document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:50vh;'>❌ Access Denied ❌</h1>";
+                }
+            };
+            setInterval(checkDevTools, 1000);
+        })();
+
         // สร้าง particles
         const particlesContainer = document.getElementById('particles');
         for (let i = 0; i < 30; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            const size = Math.random() * 80 + 30;
-            particle.style.width = size + 'px';
-            particle.style.height = size + 'px';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 10 + 's';
-            particle.style.animationDuration = (Math.random() * 15 + 15) + 's';
-            particlesContainer.appendChild(particle);
-        }
-
-        // 3D Mouse Effect - Smooth
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    const size = Math.random() * 80 + 30;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 10 + 's';
+                    particle.style.animationDuration = (Math.random() * 15 + 15) + 's';
+                    particlesContainer.appendChild(particle);
+                }
+// 3D Mouse Effect - Smooth
         const card = document.getElementById('bioCard');
         const container = document.querySelector('.card-container');
         let mouseX = 0, mouseY = 0;
@@ -881,43 +911,6 @@
             
             document.body.insertAdjacentHTML('beforeend', guideHTML);
         }
-
-        // Add DevTools access button
-        const devToolsBtn = document.createElement('button');
-        devToolsBtn.innerHTML = '🛠️ DevTools Guide';
-        devToolsBtn.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(139, 92, 246, 0.3);
-            border: 1px solid rgba(139, 92, 246, 0.5);
-            color: white;
-            border: none;
-            padding: 12px 18px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 12px;
-            z-index: 9999;
-            backdrop-filter: blur(10px);
-            border-radius: 8px;
-            font-weight: 600;
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
-            transition: all 0.3s ease;
-        `;
-        
-        devToolsBtn.addEventListener('mouseenter', function() {
-            this.style.background = 'rgba(139, 92, 246, 0.5);
-            transform: translateY(-2px);
-        });
-        
-        devToolsBtn.addEventListener('mouseleave', function() {
-            this.style.background = 'rgba(139, 92, 246, 0.3);
-            this.style.boxShadow = '0 6px 25px rgba(139, 92, 246, 0.5);
-            transform: translateY(0);
-        });
-        
-        devToolsBtn.addEventListener('click', showDevToolsGuide);
-        document.body.appendChild(devToolsBtn);
-    </script>
+</script>
 </body>
 </html>
