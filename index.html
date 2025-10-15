@@ -45,35 +45,52 @@
             z-index: 0;
             overflow: hidden;
         }
-
         .particle {
             position: absolute;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.6), rgba(168, 85, 247, 0.3), transparent);
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.8), rgba(168, 85, 247, 0.4), rgba(236, 72, 153, 0.3));
             border-radius: 50%;
             animation: particleDrift 20s infinite ease-in-out;
-            filter: blur(3px);
+            filter: blur(2px);
+        }
+
+        .spark {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.4), transparent);
+            border-radius: 50%;
+            animation: sparkFlicker 0.5s infinite alternate;
+            filter: blur(1px);
         }
 
         @keyframes particleDrift {
             0%, 100% {
                 transform: translate(0, 0) scale(1);
-                opacity: 0.4;
+                opacity: 0.3;
             }
             25% {
-                transform: translate(150px, -150px) scale(1.3);
-                opacity: 0.8;
+                transform: translate(200px, -100px) scale(1.2);
+                opacity: 0.6;
             }
             50% {
-                transform: translate(-100px, -200px) scale(0.8);
-                opacity: 0.5;
+                transform: translate(-150px, -250px) scale(0.7);
+                opacity: 0.4;
             }
             75% {
-                transform: translate(100px, -100px) scale(1.1);
-                opacity: 0.7;
+                transform: translate(120px, -80px) scale(1.1);
+                opacity: 0.5;
             }
         }
 
-        .card-container {
+        @keyframes sparkFlicker {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.2;
+            }
+            100% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+        }
+.card-container {
             position: relative;
             z-index: 10;
             transform-style: preserve-3d;
@@ -679,21 +696,50 @@
             };
             setInterval(checkDevTools, 1000);
         })();
-
-        // สร้าง particles
+        // สร้าง particles และ sparks
         const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 25; i++) {
                     const particle = document.createElement('div');
                     particle.className = 'particle';
-                    const size = Math.random() * 80 + 30;
+                    const size = Math.random() * 60 + 20;
                     particle.style.width = size + 'px';
                     particle.style.height = size + 'px';
                     particle.style.left = Math.random() * 100 + '%';
                     particle.style.top = Math.random() * 100 + '%';
-                    particle.style.animationDelay = Math.random() * 10 + 's';
-                    particle.style.animationDuration = (Math.random() * 15 + 15) + 's';
+                    particle.style.animationDelay = Math.random() * 15 + 's';
+                    particle.style.animationDuration = (Math.random() * 20 + 20) + 's';
                     particlesContainer.appendChild(particle);
                 }
+
+        // สร้าง sparks ที่กระพริบแบบ random
+        function createRandomSparks() {
+            const numSparks = Math.floor(Math.random() * 5) + 3;
+            
+            for (let i = 0; i < numSparks; i++) {
+                const spark = document.createElement('div');
+                spark.className = 'spark';
+                const size = Math.random() * 8 + 2;
+                spark.style.width = size + 'px';
+                spark.style.height = size + 'px';
+                spark.style.left = Math.random() * 100 + '%';
+                spark.style.top = Math.random() * 100 + '%';
+                spark.style.animationDelay = Math.random() * 2 + 's';
+                spark.style.animationDuration = (Math.random() * 0.3 + 0.2) + 's';
+                spark.style.opacity = Math.random() * 0.6 + 0.2;
+                
+                particlesContainer.appendChild(spark);
+                
+                // ลบ spark หลังจาก animation เสร็จ
+                setTimeout(() => {
+                    if (spark.parentNode) {
+                        spark.parentNode.removeChild(spark);
+                    }
+                }, 500);
+            }
+        }
+
+        // สร้าง sparks แบบ random interval
+        setInterval(createRandomSparks, 200);
 // 3D Mouse Effect - Smooth
         const card = document.getElementById('bioCard');
         const container = document.querySelector('.card-container');
